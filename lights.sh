@@ -1,21 +1,8 @@
 #!/bin/bash
-#Usage: lights.sh blink (delay in seconds) (count)
-#Usage: lights.sh on/off
-#Assumes that 4 gpio pins are being used which are pins 0 1 3 4 based on wiringpi
-
 init() {
 	for i in {0 1 3 4}; do
 		gpio mode "$i" out
 	done
-}
-
-toggle() {
-	state=$(gpio read $1);
-	if [ $state -eq 1 ]; then
-		gpio write $1 0
-	elif [ $state -eq 0 ]; then
-		gpio write $1 1
-	fi
 }
 
 init
@@ -34,7 +21,7 @@ if [ "$1" == "blink" ]; then
 	for i in `seq 1 $count`; do
 		sleep $delay
 		for j in {0 1 3 4}; do
-			toggle $j
+			gpio toggle $j
 		done
 		sleep $delay
 	done
